@@ -195,7 +195,7 @@ void AddGaussianNoise(double Mean=0.0)
         Mat mSrc = imread(str);
 
         int counter = 1;
-        //Увеличиваем standart deviation
+
         for (float j=0; j<=300; j+=30)
         {
             Mat mSrc_16SC;
@@ -243,26 +243,15 @@ void generateBluredImages()
 	cout << "==Bluring completed==";
 }
 
-void showImage(){
-    Mat img = imread("D:\\data\\original\\1.jpg",CV_LOAD_IMAGE_COLOR);
-    if(img.empty()){
-        std::cout << "Incorrect path or wrong filename, image not read!" << std::endl;
-        return;
-    }
-    imshow("opencvtest",addRecoImage(img));
-    waitKey(0);
-
-    return;
-}
 
 int main(int argc, char *argv[])
 {
-    showImage();
+
 	generateBluredImages();
-    AddGaussianNoise();
-    generateRotatedImages();
-    generatePerspectiveImages();
-    generateScaledImages();
+	AddGaussianNoise();
+	generateRotatedImages();
+	generatePerspectiveImages();
+	generateScaledImages();
 
     cvWaitKey(0);
     return 0;
