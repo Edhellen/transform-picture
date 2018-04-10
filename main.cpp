@@ -44,75 +44,32 @@ Mat affineTransform(Mat src, int xSrc[], int ySrc[], float xDest[], float yDest[
     string str1 = "Source image";
     string str2 = "Warp";
 
-    //char* source_window ='1';
-    //char* warp_window = '2';
-    //char* warp_rotate_window = "Warp + Rotate";
+
     Point2f srcTri[3];
     Point2f dstTri[3];
 
-      // Mat rot_mat( 2, 3, CV_32FC1 );
+
        Mat warp_mat( 2, 3, CV_32FC1 );
        Mat  warp_dst;
-       //Mat warp_rotate_dst;
 
-       /// Load the image
-       //src = imread( argv[1], 1 );
-//        src = imread("E://lena.jpg",1);
-       /// Set the dst image the same type and size as src
        warp_dst = Mat::zeros( src.rows, src.cols, src.type() );
 
-       /// Set your 3 points to calculate the  Affine Transform
        srcTri[0] = Point2f( xSrc[0],ySrc[0] );
-       //srcTri[1] = Point2f( src.cols - 1, 0 );
-       //srcTri[2] = Point2f( 0, src.rows - 1 );
        srcTri[1] = Point2f( xSrc[1], ySrc[1] );
        srcTri[2] = Point2f( xSrc[2], ySrc[2] );
 
-
-//       dstTri[0] = Point2f( src.cols*0.0, src.rows*0.33 );
-//       dstTri[1] = Point2f( src.cols*0.85, src.rows*0.25 );
-//       dstTri[2] = Point2f( src.cols*0.15, src.rows*0.7 );
        dstTri[0] = Point2f( src.cols*xDest[0], src.rows*yDest[0] );
        dstTri[1] = Point2f( src.cols*xDest[1], src.rows*yDest[1] );
        dstTri[2] = Point2f( src.cols*xDest[2], src.rows*yDest[2] );
 
-//       dstTri[0] = Point2f( src.cols*0.2, src.rows*0.0 );
-//       dstTri[1] = Point2f( src.cols*1.2, src.rows-1 );
-//       dstTri[2] = Point2f( src.cols*0.2, src.rows*0.0 );
-
        /// Get the Affine Transform
        warp_mat = getAffineTransform( srcTri, dstTri );
-
 
        /// Apply the Affine Transform just found to the src image
        warpAffine( src, warp_dst, warp_mat, warp_dst.size() );
 
        return warp_dst;
        /** Rotating the image after Warp */
-
-       /// Compute a rotation matrix with respect to the center of the image
-      /* Point center = Point( warp_dst.cols/2, warp_dst.rows/2 );
-       double angle = -50.0;
-       double scale = 0.6;
-
-       /// Get the rotation matrix with the specifications above
-       rot_mat = getRotationMatrix2D( center, angle, scale );
-
-       /// Rotate the warped image
-       warpAffine( warp_dst, warp_rotate_dst, rot_mat, warp_dst.size() );
-*/
-       /// Show what you got
-/*       namedWindow( source_window, CV_WINDOW_AUTOSIZE );
-       imshow( source_window, src );
-
-       namedWindow( warp_window, CV_WINDOW_AUTOSIZE );
-       imshow( warp_window, warp_dst );
-       imwrite("affine.jpg", warp_dst);*/
-
-  //     namedWindow( warp_rotate_window, CV_WINDOW_AUTOSIZE );
-    //   imshow( warp_rotate_window, warp_rotate_dst );
-    //return src;
-         // trans_mat = getTranslationMatrix2d(2, 2)
 }
 
 Mat perspectiveTransform(Mat src, float xDest[], float yDest[])
@@ -150,16 +107,6 @@ Mat perspectiveTransform(Mat src, float xDest[], float yDest[])
 
 }
 
-Mat addRecoImage(Mat src)
-{
-	string str = "D:\\data\\original\\1.jpg";
-    Mat rec = imread(str);
-
-    rec.copyTo(src(cv::Rect(src.size().width/2.5,src.size().height/4,rec.cols, rec.rows)));
-
-    return src;
-}
-
 void generateRotatedImages()
 {
     cout << "==Rotating Started=="<<endl;
@@ -167,7 +114,7 @@ void generateRotatedImages()
     {
 		string str = "D:\\data\\original\\" + to_string(i) + ".jpg";
         Mat m = imread(str);
-        //m = addRecoImage(m);
+
         int counter = 1;
 
         for(int j = 10; j <=180; j = j+10)
@@ -310,12 +257,12 @@ void showImage(){
 
 int main(int argc, char *argv[])
 {
-    //showImage();
+    showImage();
 	generateBluredImages();
-    //AddGaussianNoise();
-    //generateRotatedImages();
-    //generatePerspectiveImages();
-    //generateScaledImages();
+    AddGaussianNoise();
+    generateRotatedImages();
+    generatePerspectiveImages();
+    generateScaledImages();
 
     cvWaitKey(0);
     return 0;
